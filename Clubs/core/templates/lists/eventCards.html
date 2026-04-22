@@ -1,0 +1,97 @@
+<div class="flex flex-col space-y-10 p-6">
+    {% for event in events %}
+    <div class="flex flex-col md:flex-row items-center bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition">
+
+        {% comment %} Alternate image position (left-right) {% endcomment %}
+        {% if forloop.counter|divisibleby:2 %}
+            <!-- Image on the right for even events -->
+            <div class="order-2 md:w-1/2">
+                {% if event.image %}
+                <a href="{% url 'event-detail' event.id %}">
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-64 object-cover">
+                </a>
+                {% else %}
+                <a href="{% url 'event-detail' event.id %}">
+                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
+                        No Image
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Text on the left -->
+            <div class="order-1 md:w-1/2 p-6 space-y-3">
+                <p class="text-sm text-gray-500 flex items-center gap-1">
+                    <span>📅</span> {{ event.date|date:"d M Y" }}
+                </p>
+
+                <h2 class="text-2xl font-semibold text-gray-800 hover:text-blue-700 transition">
+                    <a href="{% url 'event-detail' event.id %}">{{ event.title }}</a>
+                </h2>
+
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    {{ event.description|truncatewords:25 }}
+                </p>
+
+                <p class="text-sm text-blue-600 font-medium">
+                    {% if event.event_type == 'club' %}
+                    🔹 Club Event
+                    {% else %}
+                    🌐 General Event
+                    {% endif %}
+                </p>
+
+                {% if event.club %}
+                <p class="text-sm text-gray-500">🏛️ Organized by {{ event.club.name }}</p>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <!-- Image on the left for odd events -->
+            <div class="md:w-1/2">
+                {% if event.image %}
+                <a href="{% url 'event-detail' event.id %}">
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-64 object-cover">
+                </a>
+                {% else %}
+                <a href="{% url 'event-detail' event.id %}">
+                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
+                        No Image
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Text on the right -->
+            <div class="md:w-1/2 p-6 space-y-3">
+                <p class="text-sm text-gray-500 flex items-center gap-1">
+                    <span>📅</span> {{ event.date|date:"d M Y" }}
+                </p>
+
+                <h2 class="text-2xl font-semibold text-gray-800 hover:text-blue-700 transition">
+                    <a href="{% url 'event-detail' event.id %}">{{ event.title }}</a>
+                </h2>
+
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    {{ event.description|truncatewords:25 }}
+                </p>
+
+                <p class="text-sm text-blue-600 font-medium">
+                    {% if event.event_type == 'club' %}
+                    🔹 Club Event
+                    {% else %}
+                    🌐 General Event
+                    {% endif %}
+                </p>
+
+                {% if event.club %}
+                <p class="text-sm text-gray-500">🏛️ Organized by {{ event.club.name }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    {% empty %}
+    <p class="text-gray-500 text-center">No events available.</p>
+    {% endfor %}
+</div>
